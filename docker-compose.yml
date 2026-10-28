@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    ports: ["5672:5672","15672:15672"]
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: orders_db
+    ports: ["5432:5432"]
+  order-service:
+    build: ./order-service
+    ports: ["5001:5001"]
+    depends_on: [rabbitmq, postgres]
